@@ -3,7 +3,7 @@
 #
 #  drydock.py
 #  
-#  Copyright 2019 bileyg <bileyg@bodhi>
+#  Copyright 2020 bileyg <bileyg@bodhi>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
