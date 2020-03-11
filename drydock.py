@@ -37,7 +37,7 @@ def draw_menu(stdscr):
     tifile.close()
     
     #get config
-    conffile = open("drydock.cfg","r")
+    conffile = open("drydock-2.cfg","r")
     conflist = conffile.readlines()
     conffile.close()
 
@@ -54,6 +54,8 @@ def draw_menu(stdscr):
     F10conf = [conflist[100][1:-1]]
     F11conf = [conflist[101][1:-1]]
     F12conf = [conflist[102][1:-1]]
+    Term = [conflist[103][0:-1]]
+    Terminal = Term[0]  
 
     #config matrix
     Fconf = [0,F1conf,F2conf,F3conf,F4conf,F5conf,F6conf,F7conf,F8conf,F9conf,F10conf,F11conf,F12conf]
@@ -242,7 +244,8 @@ def draw_menu(stdscr):
                     key = 10
                     grn = 5
              
-                command = Fconf[MS][key]
+                #Terminal = 'gnome-terminal'
+                command = Terminal + ' -- ' + Fconf[MS][key]
                 p = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                 F_Done[MS][grn] = True
                 
