@@ -262,19 +262,6 @@ def draw_menu(stdscr):
         subtitle = "Made with Python3 Curses"
         keystr = "bileyg | Sankt-Peterburg"
         
-        alogostr1 = '       #   ##           #        #         #     '
-        alogostr2 = '            #           #        #               '
-        alogostr3 = '########    #    ###   ####     ####  # ####     '
-        alogostr4 = '#  #   #    #    # #    #        #    # #  #     '
-        alogostr4 = '####   ######################    ########  ####  '
-        alogostr5 = '#                                         '
-        
-        logostr1 = '        '+B+'   '+B+B+'            '+B+'         '+B+'             '+B
-        logostr2 = '             '+B+'            '+B+'         '+B+'                '
-        logostr3 = B+B+B+B+B+B+B+B+B+'    '+B+'    '+B+B+B+B+'   '+B+B+B+B+'      '+B+B+B+B+'   '+B+'  '+B+B+B+B+B+B
-        logostr4 = B+'  '+B+'    '+B+'    '+B+'    '+B+'  '+B+'    '+B+'         '+B+'     '+B+'  '+B+'    '+B
-        logostr5 = B+B+B+B+'    '+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+B+'    '+B+B+B+B+B+B+B+B+B+B+'    '+B+B+B+B
-        logostr6 = B
         
         # Centering calculations
         start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
@@ -299,23 +286,25 @@ def draw_menu(stdscr):
             PixelMatrix = []
             PixelString = []
             PixelColors = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
-            for j in range(3,22):
-                PixelString = tilist[j]
-                for i in range(3,82):
-                    Pixel = tilist[j][i]
-                    #print('got it')
-                    #print(Pixel)
-                    PColor = PixelColors.index(Pixel)
-                    stdscr.attron(curses.color_pair(20+PColor))
-                    if PColor > 7:
-                        stdscr.attron(curses.A_BOLD)
-                    XX = (center_x - (len(PixelString)-4)//2)
-                    YY = (center_y - 11)
-                    stdscr.addstr(j-1+YY, i-3+XX, B)
-                    #stdscr.addstr(start_y+j-11, start_x_logo+i, 'B')
-                    if PColor > 7:
-                        stdscr.attroff(curses.A_BOLD)
-                    stdscr.attroff(curses.color_pair(20+PColor)) 
+            if height >= 23 and width >= 80:
+                
+                for j in range(3,22):
+                    PixelString = tilist[j]
+                    for i in range(3,82):
+                        Pixel = tilist[j][i]
+                        #print('got it')
+                        #print(Pixel)
+                        PColor = PixelColors.index(Pixel)
+                        stdscr.attron(curses.color_pair(20+PColor))
+                        if PColor > 7:
+                            stdscr.attron(curses.A_BOLD)
+                        XX = (center_x - (len(PixelString)-4)//2)
+                        YY = (center_y - 11)
+                        stdscr.addstr(j-1+YY, i-3+XX, B)
+                        #stdscr.addstr(start_y+j-11, start_x_logo+i, 'B')
+                        if PColor > 7:
+                            stdscr.attroff(curses.A_BOLD)
+                        stdscr.attroff(curses.color_pair(20+PColor)) 
             
             # Rendering subtitle
             
@@ -343,7 +332,7 @@ def draw_menu(stdscr):
         ################################################################
         
         topperstr1 = whstr
-        topperstr1 = ' \U00002297' + '  DRYDOCK v.0.01 '
+        topperstr1 = ' \U00002297' + '  DRYDOCK v.0.02 '
         topperstr2 = ' \U00002297' + '  terminal launcher by bileyg'
         topperstr3 = " "
         
@@ -384,10 +373,16 @@ def draw_menu(stdscr):
             Fconf0names.append(sss)
         FCN = Fconf0names
             
-        #statusbar menu set
-        statusbarstr2 = " "+FCN[0]+" | "+FCN[1]+" | "+FCN[2]+" | "+FCN[3]+" | "+FCN[4]+" | "+FCN[5]+" |"
-        statusbarstr1 = " "+FCN[6]+" | "+FCN[7]+" | "+FCN[8]+" | "+FCN[9]+" | "+FCN[10]+" | "+FCN[11]+" |"
-        
+        if height >= 23 and width >= 79:
+            
+            #statusbar menu set
+            statusbarstr2 = " "+FCN[0]+" | "+FCN[1]+" | "+FCN[2]+" | "+FCN[3]+" | "+FCN[4]+" | "+FCN[5]+" |"
+            statusbarstr1 = " "+FCN[6]+" | "+FCN[7]+" | "+FCN[8]+" | "+FCN[9]+" | "+FCN[10]+" | "+FCN[11]+" |"
+            
+        else:
+            statusbarstr2 = "79x23"
+            statusbarstr1 = "minimum"
+            
         # Render status bar
         stdscr.attron(curses.color_pair(sbpair1))
         stdscr.addstr(height-1, 0, statusbarstr1)
@@ -409,9 +404,27 @@ def draw_menu(stdscr):
         
         # The window stuff (inserting preliminary set "stringaz")
         
-        if showWindow == True:
-            begin_x = 1; begin_y = 4
-            wHeight = height - 7; wWidth = width - 2
+        if showWindow == True and height >= 22 and width >= 79:
+            #center_y = int(height//2)
+            #center_x = int(width //2)
+            
+            if height < 24:
+                wHeight = height - 8
+                begin_y = 4
+            else:
+                wHeight = 16
+                begin_y = center_y - wHeight//2
+                    
+            if width <= 80:
+                wWidth = width - 8
+                begin_x = 4
+            else:
+                wWidth = 70
+                begin_x = center_x - wWidth//2
+            
+            if height == 24 and width == 80:
+                begin_x = 1; begin_y = 4
+                wHeight = height - 7; wWidth = width - 2
         
             winn = curses.initscr()        
             winn = curses.newwin(wHeight, wWidth, begin_y, begin_x)
