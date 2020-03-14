@@ -530,6 +530,9 @@ def draw_menu(stdscr):
         F_Done[5][3] = False
         F_Done[7][1] = False
         
+        #cursor move works if right before the refresh()
+        #stdscr.move(cursor_y, cursor_x)
+        
         # Refresh the screen
         stdscr.refresh()
 
