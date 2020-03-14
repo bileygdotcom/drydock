@@ -333,7 +333,7 @@ def draw_menu(stdscr):
         ################################################################
         
         topperstr1 = whstr
-        topperstr1 = ' \U00002297' + '  DRYDOCK v.0.02 '
+        topperstr1 = ' \U00002297' + '  DRYDOCK Stable v.0.02 '
         topperstr2 = ' \U00002297' + '  terminal launcher by bileyg'
         topperstr3 = " "
         
