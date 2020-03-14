@@ -82,6 +82,7 @@ def draw_menu(stdscr):
     curses.init_pair(9, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(10, curses.COLOR_BLUE, curses.COLOR_BLACK)
     
+    #colors for logo. 
     curses.init_pair(20, curses.COLOR_BLACK,  curses.COLOR_WHITE)
     curses.init_pair(21, curses.COLOR_RED,    curses.COLOR_WHITE)
     curses.init_pair(22, curses.COLOR_GREEN,  curses.COLOR_WHITE)
