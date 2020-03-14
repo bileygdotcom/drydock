@@ -263,7 +263,10 @@ def draw_menu(stdscr):
         subtitle = "Made with Python3 Curses"
         keystr = "bileyg | Sankt-Peterburg"
         
+<<<<<<< Updated upstream
         
+=======
+>>>>>>> Stashed changes
         # Centering calculations
         start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
         start_x_subtitle = int((width // 2) - (len(subtitle) // 2) - len(subtitle) % 2)
@@ -287,6 +290,7 @@ def draw_menu(stdscr):
             PixelMatrix = []
             PixelString = []
             PixelColors = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
+<<<<<<< Updated upstream
             if height >= 23 and width >= 80:
                 
                 for j in range(3,22):
@@ -306,6 +310,22 @@ def draw_menu(stdscr):
                         if PColor > 7:
                             stdscr.attroff(curses.A_BOLD)
                         stdscr.attroff(curses.color_pair(20+PColor)) 
+=======
+            for j in range(3,22):
+                PixelString = tilist[j]
+                for i in range(3,82):
+                    Pixel = tilist[j][i]
+                    PColor = PixelColors.index(Pixel)
+                    stdscr.attron(curses.color_pair(20+PColor))
+                    if PColor > 7:
+                        stdscr.attron(curses.A_BOLD)
+                    XX = (center_x - (len(PixelString)-4)//2)
+                    YY = (center_y - 11)
+                    stdscr.addstr(j-2+YY, i-3+XX, B)
+                    if PColor > 7:
+                        stdscr.attroff(curses.A_BOLD)
+                    stdscr.attroff(curses.color_pair(20+PColor)) 
+>>>>>>> Stashed changes
             
             # Rendering subtitle
             
@@ -405,6 +425,7 @@ def draw_menu(stdscr):
         
         # The window stuff (inserting preliminary set "stringaz")
         
+<<<<<<< Updated upstream
         if showWindow == True and height >= 22 and width >= 79:
             #center_y = int(height//2)
             #center_x = int(width //2)
@@ -426,6 +447,14 @@ def draw_menu(stdscr):
             if height == 24 and width == 80:
                 begin_x = 1; begin_y = 4
                 wHeight = height - 7; wWidth = width - 2
+=======
+        #XX = (center_x - (len(PixelString)-4)//2)
+        #YY = (center_y - 11)
+        
+        if showWindow == True:
+            begin_x = 1; begin_y = 4
+            wHeight = height - 7; wWidth = width - 2
+>>>>>>> Stashed changes
         
             winn = curses.initscr()        
             winn = curses.newwin(wHeight, wWidth, begin_y, begin_x)
