@@ -28,19 +28,24 @@ import subprocess
 import resource
 from getpass import getpass 
 
+def loadImage():
 
-def draw_menu(stdscr):
-    
     #get terminal image
     tifile = open("drydock-logo.ti","r")
     tilist = tifile.readlines()
     tifile.close()
+    return tilist
+    
+def loadConfig():
     
     #get config
     conffile = open("drydock-2.cfg","r")
     conflist = conffile.readlines()
     conffile.close()
-
+    return conflist
+    
+def configMatrix(conflist):
+    
     #config lists
     F1conf = [conflist[1][1:-1],conflist[2][0:-1],conflist[3][0:-1],conflist[4][0:-1],conflist[5][0:-1],conflist[6][0:-1],conflist[7][0:-1],conflist[8][0:-1],conflist[9][0:-1],conflist[10][0:-1],conflist[11][0:-1]]
     F2conf = [conflist[12][1:-1],conflist[13][0:-1],conflist[14][0:-1],conflist[15][0:-1],conflist[16][0:-1],conflist[17][0:-1],conflist[18][0:-1],conflist[19][0:-1],conflist[20][0:-1],conflist[21][0:-1],conflist[22][0:-1]]
@@ -55,19 +60,53 @@ def draw_menu(stdscr):
     F11conf = [conflist[101][1:-1]]
     F12conf = [conflist[102][1:-1]]
     Term = [conflist[103][0:-1]]
-    Terminal = Term[0]  
-
+    Terminal = Term[0]
+    
     #config matrix
-    Fconf = [0,F1conf,F2conf,F3conf,F4conf,F5conf,F6conf,F7conf,F8conf,F9conf,F10conf,F11conf,F12conf]
+    Fconf = [0,F1conf,F2conf,F3conf,F4conf,F5conf,F6conf,F7conf,F8conf,F9conf,F10conf,F11conf,F12conf,Terminal]
+    
+    return Fconf
+    
+def doneMatrix():
+    # F Done
+    F1_Done  = [False, False, False, False, False, False]
+    F2_Done  = [False, False, False, False, False, False]
+    F3_Done  = [False, False, False, False, False, False]
+    F4_Done  = [False, False, False, False, False, False]
+    F5_Done  = [False, False, False, False, False, False]
+    F6_Done  = [False, False, False, False, False, False]
+    F7_Done  = [False, False, False, False, False, False]
+    F8_Done  = [False, False, False, False, False, False]
+    F9_Done  = [False, False, False, False, False, False]
+    F10_Done = [False, False, False, False, False, False]
+    F11_Done = [False, False, False, False, False, False]
+    F12_Done = [False, False, False, False, False, False]
+    
+    F_Done = [False, F1_Done, F2_Done, F3_Done, F4_Done, F5_Done, F6_Done, F7_Done, F8_Done, F9_Done, F10_Done, F11_Done, F12_Done]
+    return F_Done
+
+def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
     
     #k - is the pressed key variable. set it on 0
     k = 0
     cursor_x = 0
     cursor_y = 0
-
-    # Clear and refresh the screen for a blank canvas
-    stdscr.erase()
-    stdscr.refresh()
+    
+    #some preliminary vars
+    showWindow = True
+    out = "currently no comands"
+    err = "no messages yet"
+    softpath = '/opt/pilot-server'
+    Ftitle = " No selection "
+    #frontscreen (first menu) is
+    MenuState = 0
+    
+    #number text
+    N_text1 = " 1 "
+    N_text2 = " 2 "
+    N_text3 = " 3 "
+    N_text4 = " 4 "
+    N_text5 = " 5 "
     
     # Start colors in curses
     curses.start_color()
@@ -99,54 +138,11 @@ def draw_menu(stdscr):
     curses.init_pair(33, curses.COLOR_MAGENTA,curses.COLOR_WHITE)
     curses.init_pair(34, curses.COLOR_CYAN,   curses.COLOR_WHITE)
     curses.init_pair(35, curses.COLOR_WHITE,  curses.COLOR_BLACK)
-    
-    
-    # F Done
-    F1_Done  = [False, False, False, False, False, False]
-    F2_Done  = [False, False, False, False, False, False]
-    F3_Done  = [False, False, False, False, False, False]
-    F4_Done  = [False, False, False, False, False, False]
-    F5_Done  = [False, False, False, False, False, False]
-    F6_Done  = [False, False, False, False, False, False]
-    F7_Done  = [False, False, False, False, False, False]
-    F8_Done  = [False, False, False, False, False, False]
-    F9_Done  = [False, False, False, False, False, False]
-    F10_Done = [False, False, False, False, False, False]
-    F11_Done = [False, False, False, False, False, False]
-    F12_Done = [False, False, False, False, False, False]
-    
-    F_Done = [False, F1_Done, F2_Done, F3_Done, F4_Done, F5_Done, F6_Done, F7_Done, F8_Done, F9_Done, F10_Done, F11_Done, F12_Done]
-    
-    #some preliminary vars
-    showWindow = True
-    out = "currently no comands"
-    err = "no messages yet"
-    softpath = '/opt/pilot-server'
-    Ftitle = " No selection "
-    #frontscreen (first menu) is
-    MenuState = 0
-    
-    #number text
-    N_text1 = " 1 "
-    N_text2 = " 2 "
-    N_text3 = " 3 "
-    N_text4 = " 4 "
-    N_text5 = " 5 "
-    
-    #button states
-    doneF2_1 = False
-    doneF2_2 = False
-    doneF2_3 = False
-    doneF2_4 = False
-    
-    #button text
-    Ftext_1_1 = "no text yet 1 - 1"
-    Ftext_1_2 = "no text yet 1 - 2"
-    Ftext_2_1 = "no text yet 2 - 1"
-    Ftext_3_1 = "no text yet 3 - 1"
-    Ftext_4_1 = "no text yet 4 - 1"
-    Ftext_5_1 = "no text yet 5 - 1"
 
+    # Clear and refresh the screen for a blank canvas
+    stdscr.erase()
+    stdscr.refresh()
+    
     # Loop where k is the last character pressed
     #while (k != ord('q')):
     while (k != curses.KEY_F12):
@@ -244,8 +240,8 @@ def draw_menu(stdscr):
                 if k == ord('5'):
                     key = 10
                     grn = 5
-             
-                #Terminal = 'gnome-terminal'
+                    
+                Terminal = Fconf[13]
                 command = Terminal + ' -- ' + Fconf[MS][key]
                 p = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                 F_Done[MS][grn] = True
@@ -276,7 +272,6 @@ def draw_menu(stdscr):
         center_x = int((width // 2))
         
         if MenuState == 0:
-            
             
             showWindow = False
             #winn.erase()
@@ -333,7 +328,7 @@ def draw_menu(stdscr):
         ################################################################
         
         topperstr1 = whstr
-        topperstr1 = ' \U00002297' + '  DRYDOCK v.0.02 '
+        topperstr1 = ' \U00002297' + '  DRYDOCK Stable v.0.03 '
         topperstr2 = ' \U00002297' + '  terminal launcher by bileyg'
         topperstr3 = " "
         
@@ -540,7 +535,7 @@ def draw_menu(stdscr):
         k = stdscr.getch()
 
 def main():
-    curses.wrapper(draw_menu)
+    curses.wrapper(draw_menu,loadImage(),loadConfig(),configMatrix(loadConfig()),doneMatrix())
 
 if __name__ == "__main__":
     main()
