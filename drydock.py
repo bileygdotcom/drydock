@@ -328,7 +328,7 @@ def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
         ################################################################
         
         topperstr1 = whstr
-        topperstr1 = ' \U00002297' + '  DRYDOCK Stable v.0.03 '
+        topperstr1 = ' \U00002297' + '  DRYDOCK Progress v.0.04 '
         topperstr2 = ' \U00002297' + '  terminal launcher by bileyg'
         topperstr3 = " "
         
