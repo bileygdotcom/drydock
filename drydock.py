@@ -39,7 +39,7 @@ def loadImage():
 def loadConfig():
     
     #get config
-    conffile = open("drydock-2.cfg","r")
+    conffile = open("drydock.cfg","r")
     conflist = conffile.readlines()
     conffile.close()
     return conflist
@@ -241,8 +241,9 @@ def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
                     key = 10
                     grn = 5
                     
-                Terminal = Fconf[13]
-                command = Terminal + ' -- ' + Fconf[MS][key]
+                #Terminal = Fconf[13]
+                #command = Terminal + ' -- ' + Fconf[MS][key]
+                command = Fconf[MS][key]
                 p = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                 F_Done[MS][grn] = True
                 
